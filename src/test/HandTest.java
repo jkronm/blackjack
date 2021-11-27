@@ -64,4 +64,39 @@ class HandTest {
         newHand.add(new Card(Value.JACK, Suit.CLUB));
         assertEquals(21, newHand.value());
     }
+
+    @Test
+    void testValueAceVariation1() {
+        Hand newHand = new Hand();
+        newHand.add(new Card(Value.ACE, Suit.CLUB));
+        newHand.add(new Card(Value.SEVEN, Suit.CLUB));
+        newHand.add(new Card(Value.SIX, Suit.CLUB));
+        assertEquals(14, newHand.value());
+    }
+
+    @Test
+    void testHard() {
+        Hand newHand = new Hand();
+        newHand.add(new Card(Value.ACE, Suit.CLUB));
+        newHand.add(new Card(Value.SEVEN, Suit.CLUB));
+        newHand.add(new Card(Value.TEN, Suit.CLUB));
+        assertFalse(newHand.isSoft());
+    }
+
+    @Test
+    void testSoft() {
+        Hand newHand = new Hand();
+        newHand.add(new Card(Value.ACE, Suit.CLUB));
+        newHand.add(new Card(Value.SEVEN, Suit.CLUB));
+        newHand.add(new Card(Value.TWO, Suit.CLUB));
+        assertTrue(newHand.isSoft());
+    }
+
+    @Test
+    void testSoftTwoAce() {
+        Hand newHand = new Hand();
+        newHand.add(new Card(Value.ACE, Suit.CLUB));
+        newHand.add(new Card(Value.ACE, Suit.CLUB));
+        assertTrue(newHand.isSoft());
+    }
 }

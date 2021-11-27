@@ -48,4 +48,21 @@ public class Hand {
         }
         return 0;
     }
+
+    public List<Card> cardsInHand() {
+        return cards;
+    }
+
+    public boolean isSoft() {
+        int val = 0;
+        boolean hasAce = false;
+        for (Card card : cards) {
+            if (card.getValue() == ACE) {hasAce = true;}
+            val += stringToValue(card.getValue());
+        }
+
+        if (val <= 11 && hasAce) {return true;}
+
+        return false;
+    }
 }
