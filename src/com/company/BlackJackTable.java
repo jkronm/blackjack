@@ -7,6 +7,7 @@ public class BlackJackTable {
     Shoe shoe;
     Hand dealerHand;
     Hand playerHand;
+    int betOnTable = 0;
 
     public BlackJackTable() {
         shoe = new Shoe();
@@ -20,6 +21,7 @@ public class BlackJackTable {
 
         do {
             playRound(player);
+            System.out.println("You have " + player.getAmount() + " to play with.");
             System.out.println("Next Round? (N/Y)");
             reply = sc.nextLine();
         }
@@ -33,20 +35,21 @@ public class BlackJackTable {
         String reply = "";
         int repInt = 0;
 
-        do {
-            // place bests
-            System.out.println("Place your Bet. (enter integer amount between $1 and " + player.getAmount() + ")");
-            reply = sc.nextLine();
-            try {
-                repInt = Integer.parseInt(reply);
-            }
-            catch (NumberFormatException e)
-            {
-                System.out.println("Must be an integer.");
-            } //////////////// handler just outputs error and fixes nothing for now.
-            player.withdraw(repInt);  ///////////// money is withdrawn but no money is placed back into player; still building.
+        // place bests
+        System.out.println("Place your Bet. (enter integer amount between $1 and " + player.getAmount() + ")");
+        reply = sc.nextLine();
+        try {
+            repInt = Integer.parseInt(reply);
+        }
+        catch (NumberFormatException e)
+        {
+            System.out.println("Must be an integer.");
+        } //////////////// handler just outputs error and fixes nothing for now.
+        player.withdraw(repInt);
+        betOnTable += repInt;
 
-            // deal
+        do {
+             // deal
             playerHand.empty();
             dealerHand.empty();
 
@@ -68,6 +71,7 @@ public class BlackJackTable {
             if (playerHand.value() > 21) {
                 showTable(false);
                 System.out.println("You Busted!");
+                betOnTable = 0;
                 return;
             }
         }
@@ -80,18 +84,23 @@ public class BlackJackTable {
         showTable(true);
 
         // comparisons made win, lose, tie
-        if (dealerHand.value() > 21) {
-            System.out.println("Dealer Busts, You Win!");
+        if (dealerHand.value() > 21  || playerHand.value() > dealerHand.value()) {
+            if (dealerHand.value() > 21) {
+                System.out.print("Dealer Busts, ");
+            }
+            System.out.println("You Win!");
+            player.deposit(betOnTable * 2);
+            betOnTable = 0;
             return;
         }
         if (playerHand.value() == dealerHand.value()) {
             System.out.println("You Pushed the House!");
-        }
-        else if (playerHand.value() > dealerHand.value()) {
-            System.out.println("You Win!");
+            player.deposit(betOnTable);
+            betOnTable = 0;
         }
         else {
             System.out.println("You Lose!");
+            betOnTable = 0;
         }
     }
 
@@ -120,4 +129,5 @@ public class BlackJackTable {
             dealerHand.add(shoe.draw());
         }
     }
+
 }
