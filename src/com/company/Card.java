@@ -20,7 +20,7 @@ public class Card {
 
     @Override
     public String toString() {
-        return value.toString() + ", " + suit.toString();
+        return value.toString() + "|" + suit.toString();
     }
 
     @Override

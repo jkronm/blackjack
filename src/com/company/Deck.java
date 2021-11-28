@@ -28,7 +28,13 @@ public class Deck {
     }
 
     public Card draw() {
-        return cards.remove(0);
+        try {
+            return cards.remove(0);
+        }
+        catch (Exception e) {
+            System.out.print("Deck is out of cards! Please Start new Game.");
+        }
+        return null;
     }
 
 }

@@ -22,4 +22,13 @@ class DeckTest {
         assertNotEquals(drawOne, drawTwo);
     }
 
+    @Test
+    public void testEmpty() {
+        Deck FirstDeck = new Deck();
+        for (int i = 0; i < 52; i++) {
+            Card draw = FirstDeck.draw();
+        }
+        assertEquals(null, FirstDeck.draw());
+    }
+
 }
