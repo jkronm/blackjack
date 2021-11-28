@@ -14,12 +14,12 @@ public class BlackJackTable {
         playerHand = new Hand();
     }
 
-    public void playGame() {
+    public void playGame(Player player) {
         Scanner sc = new Scanner(System.in);
         String reply = "";
 
         do {
-            playRound();
+            playRound(player);
             System.out.println("Next Round? (N/Y)");
             reply = sc.nextLine();
         }
@@ -27,12 +27,25 @@ public class BlackJackTable {
 
     }
 
-    public void playRound() {
+    public void playRound(Player player) {
         // Player hit/not hit multiple times
         Scanner sc = new Scanner(System.in);
         String reply = "";
+        int repInt = 0;
 
         do {
+            // place bests
+            System.out.println("Place your Bet. (enter integer amount between $1 and " + player.getAmount() + ")");
+            reply = sc.nextLine();
+            try {
+                repInt = Integer.parseInt(reply);
+            }
+            catch (NumberFormatException e)
+            {
+                System.out.println("Must be an integer.");
+            } //////////////// handler just outputs error and fixes nothing for now.
+            player.withdraw(repInt);  ///////////// money is withdrawn but no money is placed back into player; still building.
+
             // deal
             playerHand.empty();
             dealerHand.empty();
