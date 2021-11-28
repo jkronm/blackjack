@@ -48,25 +48,26 @@ public class BlackJackTable {
         player.withdraw(repInt);
         betOnTable += repInt;
 
+        // deal
+        playerHand.empty();
+        dealerHand.empty();
+
+        playerHand.add(shoe.draw());
+        dealerHand.add(shoe.draw());
+        playerHand.add(shoe.draw());
+        dealerHand.add(shoe.draw());
+
         do {
-             // deal
-            playerHand.empty();
-            dealerHand.empty();
-
-            playerHand.add(shoe.draw());
-            dealerHand.add(shoe.draw());
-            playerHand.add(shoe.draw());
-            dealerHand.add(shoe.draw());
-
             showTable(false);
             System.out.println("Would player like to Stand, Hit, or Double down? (S/H/D)");
             reply = sc.nextLine();
             if (reply.equalsIgnoreCase("H")){
                 playerHand.add(shoe.draw());
             }
-            else if (reply.equalsIgnoreCase("D")) {
+            else if (reply.equalsIgnoreCase("D")) {  // need handler for if they don't have the money; work in progress.
                 playerHand.add(shoe.draw());
-                // add money handler here once you have that mechanic
+                player.withdraw(repInt);
+                betOnTable += repInt;
             }
             if (playerHand.value() > 21) {
                 showTable(false);
@@ -84,7 +85,7 @@ public class BlackJackTable {
         showTable(true);
 
         // comparisons made win, lose, tie
-        if (dealerHand.value() > 21  || playerHand.value() > dealerHand.value()) {
+        if (playerHand.value() <=21 && (dealerHand.value() > 21  || playerHand.value() > dealerHand.value())) {
             if (dealerHand.value() > 21) {
                 System.out.print("Dealer Busts, ");
             }
