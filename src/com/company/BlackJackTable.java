@@ -2,13 +2,13 @@ package com.company;
 
 import java.util.Scanner;
 
-public class Table {
+public class BlackJackTable {
 
     Shoe shoe;
     Hand dealerHand;
     Hand playerHand;
 
-    public Table() {
+    public BlackJackTable() {
         shoe = new Shoe();
         dealerHand = new Hand();
         playerHand = new Hand();
@@ -28,17 +28,20 @@ public class Table {
     }
 
     public void playRound() {
-        // deal
-        playerHand.add(shoe.draw());
-        dealerHand.add(shoe.draw());
-        playerHand.add(shoe.draw());
-        dealerHand.add(shoe.draw());
-
         // Player hit/not hit multiple times
         Scanner sc = new Scanner(System.in);
         String reply = "";
 
         do {
+            // deal
+            playerHand.empty();
+            dealerHand.empty();
+
+            playerHand.add(shoe.draw());
+            dealerHand.add(shoe.draw());
+            playerHand.add(shoe.draw());
+            dealerHand.add(shoe.draw());
+
             showTable(false);
             System.out.println("Would player like to Stand, Hit, or Double down? (S/H/D)");
             reply = sc.nextLine();

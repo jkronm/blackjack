@@ -9,7 +9,7 @@ public class Main {
         String reply = "";
 
         do {
-        Table newGame = new Table();
+        BlackJackTable newGame = new BlackJackTable();
         newGame.playGame();
         System.out.println("Would you like to play a whole new game? (N/Y)");
         reply = sc.nextLine();

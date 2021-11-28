@@ -99,4 +99,12 @@ class HandTest {
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         assertTrue(newHand.isSoft());
     }
+
+    @Test
+    void testEmpty() {
+        Hand newHand = new Hand();
+        newHand.add(new Card(Value.ACE, Suit.CLUB));
+        newHand.empty();
+        assertTrue(newHand.cardsInHand().isEmpty());
+    }
 }

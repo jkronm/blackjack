@@ -65,4 +65,8 @@ public class Hand {
 
         return false;
     }
+
+    public void empty() {
+        cards.clear();
+    }
 }
