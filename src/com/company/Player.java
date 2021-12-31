@@ -9,22 +9,23 @@ public class Player {
     }
 
     public Player(int startAmount) {
-        money = startAmount;
+        money = Math.max(startAmount, 0);
     }
 
     public void setAmount(int set) {
-        money = set;
+        money = Math.max(set, 0);
     }
 
-    public void deposit(int dep) {
-        money += dep;
-    }
+    public void deposit(int dep) {money += dep; }
 
     public void withdraw(int withd) {
         money -= withd;
+        money = Math.max(money, 0); }
+
+    public String getAmountString() {return "$" + String.valueOf(money); }
+
+    public int getAmountInt() {
+        return money;
     }
 
-    public String getAmount() {
-        return "$" + String.valueOf(money);
-    }
 }
