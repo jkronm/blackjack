@@ -6,8 +6,9 @@ public class BlackJackTable {
 
     Shoe shoe;
     Hand dealerHand;
-    Hand playerHand;
+    Hand playerHand; // make this a list of hands. then add run checks below against all instances of hands.
     int betOnTable = 0;
+    int minimumBet = 1;
 
     public BlackJackTable() {
         shoe = new Shoe();
@@ -15,23 +16,23 @@ public class BlackJackTable {
         playerHand = new Hand();
     }
 
+    // Initilize blackjack game. Starts with check on player funds
     public void playGame(Player player) {
         Scanner sc = new Scanner(System.in);
         String reply = "";
 
-        if (player.getAmountInt() <= 0) {
-            System.out.println("You do not have enough money to play");
-            return;
-        }
+        if (checkEnoughMoney(minimumBet, player) == false) {  // Check if enough at start of game.
+            System.out.println("Exiting table.");
+            return;}
 
         do {
             playRound(player);
-            if (player.getAmountInt() <= 0) {
-                System.out.println("You are out of money, better luck next time!");
+            if (checkEnoughMoney(minimumBet, player) == false) { // Check if enough money between rounds.
+                System.out.println("Better luck next time!");
                 reply = "N";
             }
             else {
-                System.out.println("You have " + player.getAmountString() + " to play with.");
+                System.out.println("You have " + player.getAmountString() + " to play.");
                 System.out.println("Start Next? (N/Y)");
                 reply = sc.nextLine();
             }
@@ -40,6 +41,7 @@ public class BlackJackTable {
 
     }
 
+    // play a round of blackjack
     public void playRound(Player player) {
         // Player hit/not hit multiple times
         Scanner sc = new Scanner(System.in);
@@ -47,15 +49,16 @@ public class BlackJackTable {
         int repInt = 0;
 
         // place bests
-        System.out.println("Place your Bet. (enter integer amount between $1 and " + player.getAmountString() + ")");
-        reply = sc.nextLine();
-        try {
-            repInt = Integer.parseInt(reply);
-        }
-        catch (NumberFormatException e)
-        {
-            System.out.println("Must be an integer.");
-        } //////////////// handler just outputs error and fixes nothing for now.
+        do {
+            System.out.println("Place your Bet. (enter integer amount between $" + minimumBet + " and " + player.getAmountString() + ").");
+            reply = sc.nextLine();
+            try {
+                repInt = Integer.parseInt(reply);
+            } catch (NumberFormatException e) {
+                System.out.println("Must be an integer.");
+            } //////////////// handler just outputs error and fixes nothing for now.
+            if (checkEnoughMoney(repInt, player) != false) {break;}
+        } while (true);
         player.withdraw(repInt);
         betOnTable += repInt;
 
@@ -70,22 +73,33 @@ public class BlackJackTable {
 
         do {
             showTable(false);
-            System.out.println("Would player like to Stand, Hit, or Double down? (S/H/D)");
-            reply = sc.nextLine();
-            if (reply.equalsIgnoreCase("H")){
-                playerHand.add(shoe.draw());
-            }
-            else if (reply.equalsIgnoreCase("D")) {
-                if (player.getAmountInt() < repInt) {
-                    System.out.println("You do not have enough money. You receive a card, but no additional bet (a HIT).");
-                    playerHand.add(shoe.draw());
+            System.out.println("Would player like to Stand, Hit, Double down, or SPlit? (S/H/D/SP)");
+            reply = sc.nextLine().toUpperCase();
+            switch (reply) {
+                case "S" : {break;}
+                case "H" : {playerHand.add(shoe.draw()); break;}
+                case "D" : {
+                    if (checkEnoughMoney(repInt, player) == false) {
+                        System.out.println("You receive a card, but no additional bet (a HIT).");
+                        playerHand.add(shoe.draw());
+                    }
+                    else {
+                        playerHand.add(shoe.draw());
+                        player.withdraw(repInt);
+                        betOnTable += repInt;
+                    }
+                    break;
                 }
-                else {
-                    playerHand.add(shoe.draw());
-                    player.withdraw(repInt);
-                    betOnTable += repInt;
+                case "SP" : {
+                    if (playerHand.cards.get(0).getValue() != playerHand.cards.get(0).getValue()) {
+                        System.out.println("Cannot split, cards are not the same value. No additional cards or bet (a Stand).");
+                        break;
+                    }
+                    // add this at some point
+                    break;
                 }
             }
+
             if (playerHand.value() > 21) {
                 showTable(false);
                 System.out.println("You Busted!");
@@ -122,6 +136,7 @@ public class BlackJackTable {
         }
     }
 
+    // output table results
     private void showTable(boolean finalHand) {
         System.out.println("###################");
         System.out.println("Dealer's Hand:");
@@ -144,10 +159,20 @@ public class BlackJackTable {
         System.out.println("###################");
     }
 
+    // process dealer actions
     private void dealerDecision() {
         while (dealerHand.value() <= 16 || (dealerHand.isSoft() && dealerHand.value() == 17)) {
             dealerHand.add(shoe.draw());
         }
+    }
+
+    // check on player funds
+    private boolean checkEnoughMoney(int need, Player player) {
+        if (need > player.getAmountInt()) {
+            System.out.print("Not enough player funds. ");
+            return false;
+        }
+        else {return true;}
     }
 
 }
