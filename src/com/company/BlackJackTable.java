@@ -19,11 +19,22 @@ public class BlackJackTable {
         Scanner sc = new Scanner(System.in);
         String reply = "";
 
+        if (player.getAmountInt() <= 0) {
+            System.out.println("You do not have enough money to play");
+            return;
+        }
+
         do {
             playRound(player);
-            System.out.println("You have " + player.getAmount() + " to play with.");
-            System.out.println("Next Round? (N/Y)");
-            reply = sc.nextLine();
+            if (player.getAmountInt() <= 0) {
+                System.out.println("You are out of money, better luck next time!");
+                reply = "N";
+            }
+            else {
+                System.out.println("You have " + player.getAmountString() + " to play with.");
+                System.out.println("Start Next? (N/Y)");
+                reply = sc.nextLine();
+            }
         }
         while (reply.equalsIgnoreCase("Y"));
 
@@ -36,7 +47,7 @@ public class BlackJackTable {
         int repInt = 0;
 
         // place bests
-        System.out.println("Place your Bet. (enter integer amount between $1 and " + player.getAmount() + ")");
+        System.out.println("Place your Bet. (enter integer amount between $1 and " + player.getAmountString() + ")");
         reply = sc.nextLine();
         try {
             repInt = Integer.parseInt(reply);
@@ -64,10 +75,16 @@ public class BlackJackTable {
             if (reply.equalsIgnoreCase("H")){
                 playerHand.add(shoe.draw());
             }
-            else if (reply.equalsIgnoreCase("D")) {  // need handler for if they don't have the money; work in progress.
-                playerHand.add(shoe.draw());
-                player.withdraw(repInt);
-                betOnTable += repInt;
+            else if (reply.equalsIgnoreCase("D")) {
+                if (player.getAmountInt() < repInt) {
+                    System.out.println("You do not have enough money. You receive a card, but no additional bet (a HIT).");
+                    playerHand.add(shoe.draw());
+                }
+                else {
+                    playerHand.add(shoe.draw());
+                    player.withdraw(repInt);
+                    betOnTable += repInt;
+                }
             }
             if (playerHand.value() > 21) {
                 showTable(false);
@@ -109,19 +126,21 @@ public class BlackJackTable {
         System.out.println("###################");
         System.out.println("Dealer's Hand:");
         if (!finalHand) {
-            System.out.println("* " + dealerHand.cardsInHand().get(0));
+            System.out.print(" * " + dealerHand.cardsInHand().get(0));
         }
         if (finalHand) {
             for (Card card : dealerHand.cardsInHand()) {
-                System.out.println("* " + card);
+                System.out.print(" * " + card);
             }
         }
+        System.out.println();
         System.out.println("-------------------");
 
         System.out.println("Player's Hand:");
         for (Card card : playerHand.cardsInHand()) {
-            System.out.println("* " + card);
+            System.out.print(" * " + card);
         }
+        System.out.println();
         System.out.println("###################");
     }
 
