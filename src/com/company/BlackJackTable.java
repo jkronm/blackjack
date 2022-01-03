@@ -77,13 +77,13 @@ public class BlackJackTable {
         dealerHand.empty();
 
         for (Hand playerHand : playerHands) {
-            //playerHand.add(shoe.draw()); // <><><><> replace when done testing
-            playerHand.add(new Card(Value.TWO, Suit.CLUB)); //<><><>< for testing
+            //playerHand.add(shoe.draw()); // <> replace when done testing split
+            playerHand.add(new Card(Value.TWO, Suit.CLUB)); // <> for testing split
         }
         dealerHand.add(shoe.draw());
         for (Hand playerHand : playerHands) {
-            //playerHand.add(shoe.draw()); // <><><><> replace when done testing
-            playerHand.add(new Card(Value.TWO, Suit.CLUB)); //<><><>< for testing
+            //playerHand.add(shoe.draw()); // <> replace when done testing split
+            playerHand.add(new Card(Value.TWO, Suit.CLUB)); // <> for testing split
         }
         dealerHand.add(shoe.draw());
         }
@@ -127,8 +127,9 @@ public class BlackJackTable {
                             Hand newHand = new Hand();
                             newHand.add(playerHands.get(handIndex).removeAndReturnTopCard()); // get most recent card
                             playerHands.add(newHand);
-                            playerHands.get(handIndex).add(shoe.draw());
-                            playerHands.get(handIndex + 1).add(shoe.draw());
+                            // playerHands.get(handIndex).add(shoe.draw()); // <> replace when done testing multiple split
+                            playerHands.get(handIndex).add(new Card(Value.TWO, Suit.CLUB)); // <> for testing multiple split.
+                            playerHands.get(playerHands.size() - 1).add(shoe.draw());
                             betOnTable.add(betOnTable.get(handIndex));  // places identical bet from original hand on new hand.
                             player.withdraw(betOnTable.get(handIndex));
                             break;
@@ -141,7 +142,8 @@ public class BlackJackTable {
                     System.out.println("You busted this hand!");
                     playerHands.remove(handIndex);
                     betOnTable.remove(handIndex);
-                    //betOnTable.set(handIndex, 0); ///<><><> going out of bounds somehow.
+                    // prevent cycle on last hand bust. don't subtract 1 from size() b/c removed hand.
+                    if (handIndex == playerHands.size()) {break;}
                 }
             }
             while (reply.equalsIgnoreCase("H") || reply.equalsIgnoreCase("SP"));
