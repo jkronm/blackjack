@@ -1,3 +1,4 @@
+
 package test;
 
 import com.company.Card;
@@ -106,5 +107,25 @@ class HandTest {
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.empty();
         assertTrue(newHand.cardsInHand().isEmpty());
+    }
+
+    @Test
+    void sizeOfHand() {
+        Hand newHand = new Hand();
+        newHand.add(new Card(Value.ACE, Suit.CLUB));
+        newHand.add(new Card(Value.ACE, Suit.CLUB));
+        newHand.sizeOfHand();
+        assertEquals(2, newHand.sizeOfHand());
+    }
+
+    @Test
+    void removeAndReturnTopCard() {
+        Hand newHand = new Hand();
+        newHand.add(new Card(Value.ACE, Suit.CLUB));
+        newHand.add(new Card(Value.TWO, Suit.HEART));
+        Card test = newHand.removeAndReturnTopCard();
+        Card control = new Card(Value.TWO, Suit.HEART);
+        assertEquals(control, test);
+        assertEquals(1, newHand.sizeOfHand());
     }
 }

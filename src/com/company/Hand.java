@@ -69,4 +69,10 @@ public class Hand {
     public void empty() {
         cards.clear();
     }
+
+    public int sizeOfHand() {return cards.size(); }
+
+    public Card removeAndReturnTopCard() {
+        return cards.remove(cards.size() - 1);
+    }
 }
