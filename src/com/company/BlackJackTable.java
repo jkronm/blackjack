@@ -16,8 +16,7 @@ public class BlackJackTable {
         shoe = new Shoe();
         dealerHand = new Hand();
         playerHands = new ArrayList<Hand>();
-        betOnTable = new ArrayList<Integer>(); betOnTable.add(0);
-        //playerHand = new Hand();
+        betOnTable = new ArrayList<Integer>();
     }
 
     // Initilize blackjack game. Starts with check on player funds
@@ -30,7 +29,14 @@ public class BlackJackTable {
             return;}
 
         do {
+            // clear variables that may be changed between rounds
+            playerHands.removeAll(playerHands);
+            betOnTable.removeAll(betOnTable);
+
+            // play game
             playRound(player);
+
+            // check remaining funds and decide to continue to next round
             if (checkEnoughMoney(minimumBet, player) == false) { // Check if enough money between rounds.
                 System.out.println("Better luck next time!");
                 reply = "N";
@@ -42,7 +48,6 @@ public class BlackJackTable {
             }
         }
         while (reply.equalsIgnoreCase("Y"));
-
     }
 
     // play a round of blackjack
@@ -53,23 +58,28 @@ public class BlackJackTable {
         int repInt = 0;
 
         // place initial bests
-        do {
-            System.out.println("Place your Bet. (enter integer amount between $" + minimumBet + " and " + player.getAmountString() + ").");
-            reply = sc.nextLine();
-            try {
-                repInt = Integer.parseInt(reply);
-            } catch (NumberFormatException e) {
-                System.out.println("Must be an integer.");
-            } //////////////// handler just outputs error and fixes nothing for now.
-            if (checkEnoughMoney(repInt, player) != false) {break;}
-        } while (true);
-        player.withdraw(repInt);
-        betOnTable.set(betOnTable.get(0), betOnTable.get(0) + repInt);
+        {
+            do {
+                while (true) {  // continue trying until no catch
+                    try {
+                        System.out.println("Place your Bet. (enter integer amount between $" + minimumBet + " and " + player.getAmountString() + ").");
+                        reply = sc.nextLine();
+                        repInt = Integer.parseInt(reply);
+                        break;
+                    } catch (NumberFormatException e) {
+                        System.out.println("Must be an integer. Try again!");
+                    }
+                }
+                if (checkEnoughMoney(repInt, player) != false) {
+                    break;
+                }
+            } while (true);
+            player.withdraw(repInt);
+            betOnTable.add(repInt);
+        }
 
         // initial deal
         {
-        playerHands.removeAll(playerHands);
-
         Hand firstHand = new Hand();
         playerHands.add(firstHand);
 
@@ -77,13 +87,13 @@ public class BlackJackTable {
         dealerHand.empty();
 
         for (Hand playerHand : playerHands) {
-            //playerHand.add(shoe.draw()); // <> replace when done testing split
-            playerHand.add(new Card(Value.TWO, Suit.CLUB)); // <> for testing split
+            playerHand.add(shoe.draw()); // <> replace when done testing split
+            //playerHand.add(new Card(Value.TWO, Suit.CLUB)); // <> for testing split
         }
         dealerHand.add(shoe.draw());
         for (Hand playerHand : playerHands) {
-            //playerHand.add(shoe.draw()); // <> replace when done testing split
-            playerHand.add(new Card(Value.TWO, Suit.CLUB)); // <> for testing split
+            playerHand.add(shoe.draw()); // <> replace when done testing split
+            //playerHand.add(new Card(Value.TWO, Suit.CLUB)); // <> for testing split
         }
         dealerHand.add(shoe.draw());
         }
@@ -104,12 +114,12 @@ public class BlackJackTable {
                         break;
                     }
                     case "D": {
-                        if (checkEnoughMoney(repInt, player) == false) {
+                        if (checkEnoughMoney(betOnTable.get(handIndex), player) == false) {
                             System.out.println("You receive a card, but no additional bet (a HIT).");
                             playerHands.get(handIndex).add(shoe.draw());
                         } else {
                             playerHands.get(handIndex).add(shoe.draw());
-                            player.withdraw(repInt);
+                            player.withdraw(betOnTable.get(handIndex));
                             betOnTable.set(handIndex, betOnTable.get(handIndex) * 2);
                         }
                         break;
@@ -127,8 +137,8 @@ public class BlackJackTable {
                             Hand newHand = new Hand();
                             newHand.add(playerHands.get(handIndex).removeAndReturnTopCard()); // get most recent card
                             playerHands.add(newHand);
-                            // playerHands.get(handIndex).add(shoe.draw()); // <> replace when done testing multiple split
-                            playerHands.get(handIndex).add(new Card(Value.TWO, Suit.CLUB)); // <> for testing multiple split.
+                            playerHands.get(handIndex).add(shoe.draw()); // <> replace when done testing multiple split
+                            //playerHands.get(handIndex).add(new Card(Value.TWO, Suit.CLUB)); // <> for testing multiple split.
                             playerHands.get(playerHands.size() - 1).add(shoe.draw());
                             betOnTable.add(betOnTable.get(handIndex));  // places identical bet from original hand on new hand.
                             player.withdraw(betOnTable.get(handIndex));
@@ -177,6 +187,7 @@ public class BlackJackTable {
                 betOnTable.set(handIndex, 0);
             }
         }
+
         return;
     }
 
