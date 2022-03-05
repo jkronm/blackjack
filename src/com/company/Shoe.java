@@ -7,11 +7,12 @@ import java.util.List;
 public class Shoe {
 
     List<Card> decks;
+    int deckCount;
 
-    public Shoe() {
+    public Shoe(int numberOfDecks) {
         decks = new ArrayList<Card>();
 
-        int deckCount = 8;
+        deckCount = numberOfDecks;
 
         while (deckCount > 0) {
             Deck tmpDeck = new Deck();

@@ -7,15 +7,15 @@ import java.util.Scanner;
 public class BlackJackTable {
 
     Shoe shoe;
-    Hand dealerHand;
-    List<Hand> playerHands;
+    HandBLKJK dealerHand;
+    List<HandBLKJK> playerHands;
     List<Integer> betOnTable;
     int minimumBet = 1;
 
     public BlackJackTable() {
-        shoe = new Shoe();
-        dealerHand = new Hand();
-        playerHands = new ArrayList<Hand>();
+        shoe = new Shoe(8); //shoe with 8 decks
+        dealerHand = new HandBLKJK();
+        playerHands = new ArrayList<HandBLKJK>();
         betOnTable = new ArrayList<Integer>();
     }
 
@@ -80,18 +80,18 @@ public class BlackJackTable {
 
         // initial deal
         {
-        Hand firstHand = new Hand();
+        HandBLKJK firstHand = new HandBLKJK();
         playerHands.add(firstHand);
 
-        for (Hand playerHand : playerHands) {playerHand.empty();}
+        for (HandBLKJK playerHand : playerHands) {playerHand.empty();}
         dealerHand.empty();
 
-        for (Hand playerHand : playerHands) {
+        for (HandBLKJK playerHand : playerHands) {
             playerHand.add(shoe.draw()); // <> replace when done testing split
             //playerHand.add(new Card(Value.TWO, Suit.CLUB)); // <> for testing split
         }
         dealerHand.add(shoe.draw());
-        for (Hand playerHand : playerHands) {
+        for (HandBLKJK playerHand : playerHands) {
             playerHand.add(shoe.draw()); // <> replace when done testing split
             //playerHand.add(new Card(Value.TWO, Suit.CLUB)); // <> for testing split
         }
@@ -134,7 +134,7 @@ public class BlackJackTable {
                             playerHands.get(handIndex).add(shoe.draw());
                         }
                         else {
-                            Hand newHand = new Hand();
+                            HandBLKJK newHand = new HandBLKJK();
                             newHand.add(playerHands.get(handIndex).removeAndReturnTopCard()); // get most recent card
                             playerHands.add(newHand);
                             playerHands.get(handIndex).add(shoe.draw()); // <> replace when done testing multiple split

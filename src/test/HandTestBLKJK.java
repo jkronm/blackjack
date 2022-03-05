@@ -2,24 +2,24 @@
 package test;
 
 import com.company.Card;
-import com.company.Hand;
+import com.company.HandBLKJK;
 import com.company.Suit;
 import com.company.Value;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class HandTest {
+class HandTestBLKJK {
 
     @Test
     void testValueEmpty() {
-        Hand newHand = new Hand();
+        HandBLKJK newHand = new HandBLKJK();
         assertEquals(0, newHand.value());
     }
 
     @Test
     void testValueOneCard() {
-        Hand newHand = new Hand();
+        HandBLKJK newHand = new HandBLKJK();
         Card newCard = new Card(Value.FOUR, Suit.CLUB);
         newHand.add(newCard);
         assertEquals(4, newHand.value());
@@ -27,7 +27,7 @@ class HandTest {
 
     @Test
     void testValueTwoCard() {
-        Hand newHand = new Hand();
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.FOUR, Suit.CLUB));
         newHand.add(new Card(Value.NINE, Suit.HEART));
         assertEquals(13, newHand.value());
@@ -35,7 +35,7 @@ class HandTest {
 
     @Test
     void testValueAceEleven() {
-        Hand newHand = new Hand();
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.add(new Card(Value.NINE, Suit.HEART));
         assertEquals(20, newHand.value());
@@ -43,7 +43,7 @@ class HandTest {
 
     @Test
     void testValueAceOne() {
-        Hand newHand = new Hand();
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.add(new Card(Value.EIGHT, Suit.HEART));
         newHand.add(new Card(Value.FIVE, Suit.HEART));
@@ -52,7 +52,7 @@ class HandTest {
 
     @Test
     void testValueMultipleAce() {
-        Hand newHand = new Hand();
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         assertEquals(12, newHand.value());
@@ -60,7 +60,7 @@ class HandTest {
 
     @Test
     void testValueAceTen() {
-        Hand newHand = new Hand();
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.add(new Card(Value.JACK, Suit.CLUB));
         assertEquals(21, newHand.value());
@@ -68,7 +68,7 @@ class HandTest {
 
     @Test
     void testValueAceVariation1() {
-        Hand newHand = new Hand();
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.add(new Card(Value.SEVEN, Suit.CLUB));
         newHand.add(new Card(Value.SIX, Suit.CLUB));
@@ -77,7 +77,7 @@ class HandTest {
 
     @Test
     void testHard() {
-        Hand newHand = new Hand();
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.add(new Card(Value.SEVEN, Suit.CLUB));
         newHand.add(new Card(Value.TEN, Suit.CLUB));
@@ -86,7 +86,7 @@ class HandTest {
 
     @Test
     void testSoft() {
-        Hand newHand = new Hand();
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.add(new Card(Value.SEVEN, Suit.CLUB));
         newHand.add(new Card(Value.TWO, Suit.CLUB));
@@ -95,7 +95,7 @@ class HandTest {
 
     @Test
     void testSoftTwoAce() {
-        Hand newHand = new Hand();
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         assertTrue(newHand.isSoft());
@@ -103,7 +103,7 @@ class HandTest {
 
     @Test
     void testEmpty() {
-        Hand newHand = new Hand();
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.empty();
         assertTrue(newHand.cardsInHand().isEmpty());
@@ -111,7 +111,7 @@ class HandTest {
 
     @Test
     void sizeOfHand() {
-        Hand newHand = new Hand();
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.sizeOfHand();
@@ -120,7 +120,7 @@ class HandTest {
 
     @Test
     void removeAndReturnTopCard() {
-        Hand newHand = new Hand();
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.add(new Card(Value.TWO, Suit.HEART));
         Card test = newHand.removeAndReturnTopCard();

@@ -5,11 +5,11 @@ import java.util.List;
 
 import static com.company.Value.ACE;
 
-public class Hand {
+public class HandBLKJK {
 
     List<Card> cards;
 
-    public Hand(){
+    public HandBLKJK(){
         cards = new ArrayList<Card>();
     }
 
