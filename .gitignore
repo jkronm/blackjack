@@ -1,2 +1,5 @@
 # file types to ignore
 *.class
+
+# specific files
+Notes
