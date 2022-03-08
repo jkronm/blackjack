@@ -3,14 +3,23 @@ package com.company;
 import java.util.Scanner;
 
 import static com.company.Value.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class Baccarat {
+public class BaccaratTable {
 
+    Shoe shoe;
     HandBCRT dealerHand;
     HandBCRT playerHand;
     int betOnTable;
     int minimumBet = 1;
     Player player;
+
+    public BaccaratTable() {
+        shoe = new Shoe(8); //shoe with 8 decks
+        betOnTable = 0;
+        dealerHand = new HandBCRT();
+        playerHand = new HandBCRT();
+    }
 
     /*
     Initialize game
@@ -25,7 +34,9 @@ public class Baccarat {
             return;}
         do {
             //clear variables that may be changed between rounds
+            //playerHand.add(new Card(Value.ACE, Suit.SPADE));
             playerHand.cards.clear();
+            //dealerHand.add(new Card(Value.ACE, Suit.SPADE));
             dealerHand.cards.clear();
 
             //play game
@@ -88,11 +99,10 @@ public class Baccarat {
             }
 
             //deal cards
-            Shoe deck = new Shoe(1); //shoe with 1 deck so just called "deck"
-            playerHand.add(deck.draw());
-            dealerHand.add(deck.draw());
-            playerHand.add(deck.draw());
-            dealerHand.add(deck.draw());
+            playerHand.add(shoe.draw());
+            dealerHand.add(shoe.draw());
+            playerHand.add(shoe.draw());
+            dealerHand.add(shoe.draw());
 
             //show table
             showTable();
@@ -103,14 +113,14 @@ public class Baccarat {
             //check for player hand 3rd card (stands on value 6 or 7)
             boolean player3rdCard = false;
             if (playerHand.value() >= 0 && playerHand.value() <= 5) {
-                playerHand.add(deck.draw());
+                playerHand.add(shoe.draw());
                 player3rdCard = true;
             }
 
             //check for dealer hand 3rd card
             if (player3rdCard == false) {
                 if (dealerHand.value() >= 0 && dealerHand.value() <= 5) {
-                    dealerHand.add(deck.draw());
+                    dealerHand.add(shoe.draw());
                 }
             } else {
                 if (playerHand.cards.get(2).value == ACE ||
@@ -120,26 +130,26 @@ public class Baccarat {
                         playerHand.cards.get(2).value == QUEEN ||
                         playerHand.cards.get(2).value == KING) {
                     if (dealerHand.value() >= 0 && dealerHand.value() <= 3) {
-                        dealerHand.add(deck.draw());
+                        dealerHand.add(shoe.draw());
                     }
                 } else if (playerHand.cards.get(2).value == EIGHT) {
                     if (dealerHand.value() >= 0 && dealerHand.value() <= 2) {
-                        dealerHand.add(deck.draw());
+                        dealerHand.add(shoe.draw());
                     }
                 } else if (playerHand.cards.get(2).value == SIX ||
                         playerHand.cards.get(2).value == SEVEN) {
                     if (dealerHand.value() >= 0 && dealerHand.value() <= 6) {
-                        dealerHand.add(deck.draw());
+                        dealerHand.add(shoe.draw());
                     }
                 } else if (playerHand.cards.get(2).value == FOUR ||
                         playerHand.cards.get(2).value == FIVE) {
                     if (dealerHand.value() >= 0 && dealerHand.value() <= 5) {
-                        dealerHand.add(deck.draw());
+                        dealerHand.add(shoe.draw());
                     }
                 } else if (playerHand.cards.get(2).value == TWO ||
                         playerHand.cards.get(2).value == THREE) {
                     if (dealerHand.value() >= 0 && dealerHand.value() <= 4) {
-                        dealerHand.add(deck.draw());
+                        dealerHand.add(shoe.draw());
                     }
                 }
             }
@@ -165,20 +175,20 @@ public class Baccarat {
     Show status of table
      */
     private void showTable(){
-        System.out.println("#####################");
+        System.out.println("#################################");
         System.out.print("Player's hand: ");
         for (Card card : playerHand.cards) {
             System.out.print(" " + card.toString());
         }
-        System.out.println();
         System.out.println(" | Value: " + playerHand.value());
+        System.out.println("---------------------------------");
 
+        System.out.print("Dealer's hand: ");
         for (Card card : dealerHand.cards) {
             System.out.print(" " + card.toString());
         }
-        System.out.println();
         System.out.println(" | Value: " + dealerHand.value());
-        System.out.println("#####################");
+        System.out.println("#################################");
     }
 
     /*

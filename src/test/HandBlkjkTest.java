@@ -1,80 +1,109 @@
 
 package test;
 
-import com.company.*;
+import com.company.Card;
+import com.company.HandBLKJK;
+import com.company.Suit;
+import com.company.Value;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class HandTestBCRT {
+class HandBlkjkTest {
 
     @Test
     void testValueEmpty() {
-        HandBCRT newHand = new HandBCRT();
+        HandBLKJK newHand = new HandBLKJK();
         assertEquals(0, newHand.value());
     }
 
     @Test
     void testValueOneCard() {
-        HandBCRT newHand = new HandBCRT();
+        HandBLKJK newHand = new HandBLKJK();
         Card newCard = new Card(Value.FOUR, Suit.CLUB);
         newHand.add(newCard);
         assertEquals(4, newHand.value());
     }
 
     @Test
-    void TestValue1() {
-        HandBCRT newHand = new HandBCRT();
+    void testValueTwoCard() {
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.FOUR, Suit.CLUB));
         newHand.add(new Card(Value.NINE, Suit.HEART));
-        assertEquals(3, newHand.value());
+        assertEquals(13, newHand.value());
     }
 
     @Test
-    void TestValue2() {
-        HandBCRT newHand = new HandBCRT();
+    void testValueAceEleven() {
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.add(new Card(Value.NINE, Suit.HEART));
-        assertEquals(0, newHand.value());
+        assertEquals(20, newHand.value());
     }
 
     @Test
-    void TestValue3() {
-        HandBCRT newHand = new HandBCRT();
+    void testValueAceOne() {
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.add(new Card(Value.EIGHT, Suit.HEART));
         newHand.add(new Card(Value.FIVE, Suit.HEART));
-        assertEquals(4, newHand.value());
+        assertEquals(14, newHand.value());
     }
 
     @Test
-    void TestValue4() {
-        HandBCRT newHand = new HandBCRT();
+    void testValueMultipleAce() {
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.add(new Card(Value.ACE, Suit.CLUB));
-        assertEquals(2, newHand.value());
+        assertEquals(12, newHand.value());
     }
 
     @Test
-    void TestValue5() {
-        HandBCRT newHand = new HandBCRT();
+    void testValueAceTen() {
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.add(new Card(Value.JACK, Suit.CLUB));
-        assertEquals(1, newHand.value());
+        assertEquals(21, newHand.value());
     }
 
     @Test
-    void TestValue6() {
-        HandBCRT newHand = new HandBCRT();
+    void testValueAceVariation1() {
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.add(new Card(Value.SEVEN, Suit.CLUB));
         newHand.add(new Card(Value.SIX, Suit.CLUB));
-        assertEquals(4, newHand.value());
+        assertEquals(14, newHand.value());
+    }
+
+    @Test
+    void testHard() {
+        HandBLKJK newHand = new HandBLKJK();
+        newHand.add(new Card(Value.ACE, Suit.CLUB));
+        newHand.add(new Card(Value.SEVEN, Suit.CLUB));
+        newHand.add(new Card(Value.TEN, Suit.CLUB));
+        assertFalse(newHand.isSoft());
+    }
+
+    @Test
+    void testSoft() {
+        HandBLKJK newHand = new HandBLKJK();
+        newHand.add(new Card(Value.ACE, Suit.CLUB));
+        newHand.add(new Card(Value.SEVEN, Suit.CLUB));
+        newHand.add(new Card(Value.TWO, Suit.CLUB));
+        assertTrue(newHand.isSoft());
+    }
+
+    @Test
+    void testSoftTwoAce() {
+        HandBLKJK newHand = new HandBLKJK();
+        newHand.add(new Card(Value.ACE, Suit.CLUB));
+        newHand.add(new Card(Value.ACE, Suit.CLUB));
+        assertTrue(newHand.isSoft());
     }
 
     @Test
     void testEmpty() {
-        HandBCRT newHand = new HandBCRT();
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.empty();
         assertTrue(newHand.cardsInHand().isEmpty());
@@ -82,7 +111,7 @@ class HandTestBCRT {
 
     @Test
     void sizeOfHand() {
-        HandBCRT newHand = new HandBCRT();
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.sizeOfHand();
@@ -91,7 +120,7 @@ class HandTestBCRT {
 
     @Test
     void removeAndReturnTopCard() {
-        HandBCRT newHand = new HandBCRT();
+        HandBLKJK newHand = new HandBLKJK();
         newHand.add(new Card(Value.ACE, Suit.CLUB));
         newHand.add(new Card(Value.TWO, Suit.HEART));
         Card test = newHand.removeAndReturnTopCard();

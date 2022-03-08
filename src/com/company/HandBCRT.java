@@ -3,8 +3,6 @@ package com.company;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.company.Value.ACE;
-
 public class HandBCRT {
 
     List<Card> cards;

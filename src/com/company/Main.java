@@ -9,7 +9,7 @@ public class Main {
         String reply = "";
         int repInt = 0;
 
-        // new player
+        //new player
         Player player = new Player();
         System.out.println("How much money do you have? (enter integer)");
         reply = sc.nextLine();
@@ -19,11 +19,11 @@ public class Main {
         catch (NumberFormatException e)
         {
             System.out.println("Must be an integer.");
-        } //////////////// handler just outputs error and fixes nothing for now.
+        }
 
         player.setAmount(repInt);
 
-        // pick a game
+        //pick a game
         do {
             System.out.println("Pick a game (i.e. 1, 2, or 3):");
             System.out.println("1) BlackJack");
@@ -45,7 +45,7 @@ public class Main {
                     break;
                 }
                 case 2 : {
-                    Baccarat newGame = new Baccarat();
+                    BaccaratTable newGame = new BaccaratTable();
                     newGame.playGame(player);
                     break;
                 }
@@ -54,14 +54,5 @@ public class Main {
             System.out.println("Would you like to play a different new game? (N/Y)");
             reply = sc.nextLine();
         } while (reply.equalsIgnoreCase("Y"));
-
-        //// play blackjack
-        //do {
-        //BlackJackTable newGame = new BlackJackTable();
-        //newGame.playGame(player);
-        //System.out.println("Would you like to play a whole new game? (N/Y)");
-        //    reply = sc.nextLine();
-        //}
-        //while (reply.equalsIgnoreCase("Y"));
     }
 }
