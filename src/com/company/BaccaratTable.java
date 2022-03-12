@@ -33,10 +33,7 @@ public class BaccaratTable {
             System.out.println("Exiting table.");
             return;}
         do {
-            //clear variables that may be changed between rounds
-            //playerHand.add(new Card(Value.ACE, Suit.SPADE));
             playerHand.cards.clear();
-            //dealerHand.add(new Card(Value.ACE, Suit.SPADE));
             dealerHand.cards.clear();
 
             //play game
@@ -104,8 +101,7 @@ public class BaccaratTable {
             playerHand.add(shoe.draw());
             dealerHand.add(shoe.draw());
 
-            //show table
-            showTable();
+            showTable();//////////////
 
             //check for natural wins
             if (naturalWins()){return;} //round is over.
@@ -154,6 +150,9 @@ public class BaccaratTable {
                 }
             }
 
+            //show table
+            showTable();
+
             //determine winner
             int playerValue = playerHand.value();
             int dealerValue = dealerHand.value();
@@ -197,7 +196,7 @@ public class BaccaratTable {
     private boolean naturalWins(){
         if (playerHand.value() == 8 || playerHand.value() == 9) {
             System.out.println("Player Natural Win");
-            player.deposit(betOnTable);
+            player.deposit(betOnTable * 2);
             betOnTable = 0;
             return true;
         }
